@@ -1,4 +1,5 @@
 import icons from 'url:../../img/icons.svg';
+import { HIDE_WINDOW_SECS } from '../config';
 
 export default class View {
   _data;
@@ -70,7 +71,7 @@ export default class View {
     this._parentElement.insertAdjacentHTML('afterbegin', errorMsgHTML);
   }
 
-  renderMessage(message = this._message) {
+  renderMessage(message = this._message, reverseChanges = false) {
     const msgHTML = `
       <div class="message">
         <div>
@@ -83,6 +84,19 @@ export default class View {
       `;
     this._clear();
     this._parentElement.insertAdjacentHTML('afterbegin', msgHTML);
+    if (reverseChanges) {
+      setTimeout(() => {
+        this._clear();
+        this._parentElement.insertAdjacentHTML(
+          'afterbegin',
+          this._originalHTML
+        );
+      }, HIDE_WINDOW_SECS * 1500);
+    }
+  }
+
+  _captureOriginalHTML() {
+    this._originalHTML = this._parentElement.innerHTML;
   }
 
   _clear() {
