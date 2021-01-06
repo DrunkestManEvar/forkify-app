@@ -85,7 +85,6 @@ const controlAddRecipe = async function (newRecipe) {
       addRecipeView.toggleWindow();
     }, HIDE_WINDOW_SECS * 1000);
   } catch (err) {
-    console.error('bitch', err);
     addRecipeView.renderError(err.message);
   }
 };

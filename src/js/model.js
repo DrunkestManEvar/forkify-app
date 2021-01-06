@@ -15,7 +15,7 @@ export const state = {
 
 const formatRecipe = function (data) {
   const { recipe } = data.data;
-  state.recipe = {
+  return {
     id: recipe.id,
     cookingTime: recipe.cooking_time,
     image: recipe.image_url,
@@ -33,7 +33,7 @@ export const loadRecipe = async function (id) {
     const url = `${API_URL}${id}?key=${API_KEY}`;
     const data = await AJAX(url);
 
-    formatRecipe(data);
+    state.recipe = formatRecipe(data);
 
     if (state.bookmarks.some(bookmark => bookmark.id === id))
       state.recipe.bookmarked = true;
@@ -135,6 +135,7 @@ export const uploadNewRecipe = async function (newRecipe) {
     const data = await AJAX(`${API_URL}?key=${API_KEY}`, recipeToUpload);
 
     state.recipe = formatRecipe(data);
+    console.log(state.recipe);
     addBookmark(state.recipe);
   } catch (err) {
     throw err;
