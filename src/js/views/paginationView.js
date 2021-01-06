@@ -17,9 +17,9 @@ class PaginationView extends View {
 
     // In-between page
     if (currPage > 1 && currPage < numPages) {
-      return this._generatePaginationBtn('prev', currPage).concat(
-        this._generatePaginationBtn('next', currPage)
-      );
+      return this._generatePaginationBtn('prev', currPage)
+        .concat(this._generatePaginationBtn('next', currPage))
+        .concat(this._generateCurrentPageNum(currPage, numPages));
     }
 
     // Last page
@@ -46,11 +46,19 @@ class PaginationView extends View {
     `;
   }
 
+  _generateCurrentPageNum(currPage, numPages) {
+    return `
+    <button class="btn--inline pagination__btn--curr">
+      <span>Page ${currPage} / ${numPages}</span>
+    </button>
+    `;
+  }
+
   addHandlerClick(handler) {
     this._parentElement.addEventListener('click', function (e) {
       const btn = e.target.closest('.btn--inline');
 
-      if (!btn) return;
+      if (!btn || btn.classList.contains('pagination__btn--curr')) return;
 
       const goToPage = +btn.dataset.goto;
 
